@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f2f2f7" />
+    <meta name="description" content="Taipei Metro Go 行動概念原型：智慧通勤、互動路線圖、捷客電台與無障礙旅運。" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Metro Go" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231a1a1a'/%3E%3Cpath d='M16 45V19h7l9 13 9-13h7v26h-7V30L32 43 23 30v15z' fill='white'/%3E%3C/svg%3E" />
+    <title>Taipei Metro Go</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell" id="appShell">
+      <main class="app-main" id="appMain" aria-live="polite">
+        <section class="screen is-active" id="screen-home" data-screen="home" aria-label="首頁">
+          <div id="standardHome">
+            <header class="topbar">
+              <span class="topbar-spacer" aria-hidden="true"></span>
+              <h1 id="brandTitle">台北捷運</h1>
+              <button class="icon-button" id="settingsButton" aria-label="語言與模式設定" aria-expanded="false">⚙︎</button>
+            </header>
+
+            <div class="menu-popover" id="settingsMenu" hidden>
+              <p class="menu-label">顯示語言</p>
+              <div class="segmented language-options" role="group" aria-label="語言">
+                <button class="is-selected" data-language="zh">繁中</button>
+                <button data-language="en">EN</button>
+                <button data-language="ja">日本語</button>
+                <button data-language="ko">한국어</button>
+              </div>
+              <p class="menu-label">使用模式</p>
+              <button class="menu-row" data-mode="normal"><span>一般模式</span><span>✓</span></button>
+              <button class="menu-row" data-mode="tourist"><span>觀光模式</span><span>›</span></button>
+              <button class="menu-row" data-mode="accessible"><span>無障礙模式</span><span>›</span></button>
+            </div>
+
+            <div class="service-alert" id="serviceAlert" role="status">
+              <span class="alert-icon">!</span>
+              <p id="alertText">淡水信義線：台北車站月台人潮較多，請留意月台安全。</p>
+              <button id="dismissAlert" aria-label="關閉營運提醒">×</button>
+            </div>
+
+            <div class="home-content">
+              <h2 class="context-title" id="contextTitle">下班時間，準備回家嗎？</h2>
+
+              <article class="travel-card" aria-label="智慧通勤資訊">
+                <div class="location-banner">
+                  <span class="live-dot"></span>
+                  <div>
+                    <strong id="locationLabel">已定位台北車站</strong>
+                    <small id="locationHint">AI 已依照你的通勤習慣準備路線</small>
+                  </div>
+                  <span class="ai-chip">AI</span>
+                </div>
+
+                <div class="route-selector">
+                  <button class="station-select" id="originButton" data-picker="origin">
+                    <span class="line-code line-red" id="originCode">R10</span>
+                    <span><small id="originLabel">起點</small><strong id="originName">台北車站</strong></span>
+                  </button>
+                  <button class="swap-button" id="swapRoute" aria-label="交換起點與終點">⇄</button>
+                  <button class="station-select" id="destinationButton" data-picker="destination">
+                    <span class="line-code line-blue" id="destinationCode">BL18</span>
+                    <span><small id="destinationLabel">目的地</small><strong id="destinationName">市政府</strong></span>
+                  </button>
+                </div>
+
+                <div class="card-divider"></div>
+
+                <div class="arrival-row">
+                  <div>
+                    <small class="eyebrow" id="towardLabel">往</small>
+                    <h3 id="directionName">南港展覽館</h3>
+                  </div>
+                  <div class="countdown-wrap">
+                    <small><span class="live-dot tiny"></span><span id="updatedText">即時更新</span></small>
+                    <strong class="countdown" id="countdown">03:42</strong>
+                  </div>
+                </div>
+
+                <div class="crowding-row">
+                  <span id="crowdingLabel">車廂擁擠度</span>
+                  <div class="carriages" aria-label="車廂擁擠度普通">
+                    <span class="low"></span><span class="low"></span><span class="mid"></span><span class="mid"></span><span class="high"></span><span class="mid"></span>
+                  </div>
+                  <strong id="crowdingValue">普通</strong>
+                </div>
+
+                <div class="card-divider"></div>
+
+                <button class="route-change" id="favoriteToggle">
+                  <span id="quickRouteLabel">快速切換常用目的地</span><span id="favoriteChevron">›</span>
+                </button>
+                <div class="favorite-grid" id="favoriteGrid" hidden>
+                  <button data-destination="象山">回家</button>
+                  <button data-destination="市政府">去公司</button>
+                  <button data-destination="公館">學校</button>
+                  <button data-open-map="true">自訂站點</button>
+                </div>
+              </article>
+
+              <section class="metro-services" aria-labelledby="metroServicesTitle">
+                <h3 id="metroServicesTitle">捷運生活與商業服務</h3>
+                <div class="service-shortcuts">
+                  <button data-go="services"><span>熱門</span><strong>捷運商城</strong><small>熱銷商品</small></button>
+                  <button data-go="radio"><span>Live</span><strong>捷客電台</strong><small>線上共乘</small></button>
+                  <button data-go="account"><span>+12</span><strong>捷運點活動</strong><small>搭乘集點</small></button>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="mode-screen tourist-mode" id="touristMode" hidden>
+            <header class="mode-header">
+              <div><span class="metro-mark">M</span><span><strong>Metro Go</strong><small>旅客友善模式</small></span></div>
+              <button id="touristLanguage">🌐 繁中</button>
+              <button class="mode-exit" data-exit-mode aria-label="回到一般模式">▣</button>
+            </header>
+            <article class="elevator-card">
+              <div class="card-kicker"><span>♿</span><strong>電梯優先路線</strong><span class="status-chip">已開啟</span></div>
+              <h2>從台北車站前往<br />台北 101／世貿</h2>
+              <div class="accessible-route-line"><span>R10</span><i></i><span>R03</span></div>
+              <div class="route-stats"><span><strong>18</strong> 分鐘</span><span><strong>0</strong> 段樓梯</span><span><strong>2</strong> 部電梯</span></div>
+              <button class="primary-button" data-go="map">開始規劃無障礙路線</button>
+            </article>
+            <section class="attraction-strip">
+              <div><small>熱門景點出口</small><strong>台北 101</strong></div>
+              <span>4 號出口 · 全程電梯</span>
+            </section>
+            <div class="tourist-actions">
+              <button data-sheet="pass"><span>▤</span><strong>旅遊票卡</strong><small>QR 乘車碼</small></button>
+              <button data-sheet="locker"><span>▦</span><strong>行李寄放</strong><small>即時空位</small></button>
+              <button data-sheet="airport"><span>✈</span><strong>桃園機場</strong><small>轉乘導航</small></button>
+              <button data-sheet="assist"><span>●</span><strong>需要協助</strong><small>聯絡站務</small></button>
+            </div>
+          </div>
+
+          <div class="mode-screen accessible-mode" id="accessibleMode" hidden>
+            <header class="accessible-header">
+              <div><span class="access-symbol">♿</span><span><strong>安心陪伴</strong><small>高對比無障礙模式</small></span></div>
+              <button data-exit-mode>回一般模式</button>
+            </header>
+            <article class="voice-card">
+              <span class="voice-orb">◉</span>
+              <small>AI 乘客陪伴</small>
+              <h2 id="voiceGuidance">你可以說：「帶我去最近的電梯」</h2>
+              <button class="voice-button" id="voiceButton">按住說話</button>
+            </article>
+            <section class="quick-destination">
+              <h3>快速前往</h3>
+              <button data-access-destination="台北車站服務台"><strong>台北車站服務台</strong><span>全程電梯 ›</span></button>
+              <button data-access-destination="最近的無障礙廁所"><strong>最近的無障礙廁所</strong><span>步行 3 分鐘 ›</span></button>
+            </section>
+            <button class="emergency-card" id="emergencyButton"><span>!</span><span><strong>需要真人協助</strong><small>通知最近站務人員並回報進度</small></span><b>求助</b></button>
+          </div>
+        </section>
+
+        <section class="screen map-screen" id="screen-map" data-screen="map" aria-label="路線圖" hidden>
+          <header class="route-hero">
+            <button data-picker="origin"><small>目前站點</small><strong id="mapOrigin">台北車站⌄</strong></button>
+            <span>→</span>
+            <button data-picker="destination"><small>目的地</small><strong id="mapDestination">市政府⌄</strong></button>
+            <div class="route-estimate"><span id="transferCount">轉乘 0 次</span><strong id="travelMinutes">約 12 分鐘</strong></div>
+          </header>
+
+          <div class="map-toolbar">
+            <button id="zoomOut" aria-label="縮小路線圖">−</button>
+            <button id="resetMap" aria-label="重設路線圖">◎</button>
+            <button id="zoomIn" aria-label="放大路線圖">＋</button>
+          </div>
+
+          <div class="metro-map-wrap" id="metroMapWrap">
+            <svg class="metro-map" id="metroMap" viewBox="0 0 520 760" role="img" aria-label="互動式台北捷運路線示意圖">
+              <path class="metro-line red" d="M330 690 L330 130 Q330 90 290 90 L92 90" />
+              <path class="metro-line blue" d="M70 455 L438 455 Q470 455 470 420 L470 300" />
+              <path class="metro-line green" d="M400 685 L350 610 L300 545 L245 455 L245 330 L405 250" />
+              <path class="metro-line orange" d="M118 650 L185 565 L245 520 L330 455 L330 335 L210 245 L92 170" />
+              <path class="metro-line brown" d="M485 680 L430 610 L392 520 L382 455 L382 300 L462 215" />
+              <path class="metro-line yellow" d="M95 575 L170 575 L230 610 L300 610 L350 650" />
+              <g id="stationNodes"></g>
+            </svg>
+          </div>
+          <p class="map-hint">點選車站查看出口、電梯與轉乘資訊</p>
+        </section>
+
+        <section class="screen radio-screen" id="screen-radio" data-screen="radio" aria-label="捷客電台" hidden>
+          <div class="radio-content">
+            <header class="radio-header">
+              <div><h1>捷客電台</h1><span><button id="moodButton">下班夜色 · 模擬</button>讓通勤慢慢轉成自己的時間</span></div>
+              <button id="radioMenuButton" aria-label="更多電台操作">•••</button>
+            </header>
+            <div class="radio-menu" id="radioMenu" hidden>
+              <button data-radio-action="together">開啟乘客交流</button>
+              <button data-mood="morning">模擬早晨</button>
+              <button data-mood="afternoon">模擬午後</button>
+              <button data-mood="night">模擬深夜</button>
+            </div>
+            <div class="radio-stats">
+              <span><strong id="streakDays">1 天</strong><small>連續簽到</small></span>
+              <span><strong id="metroPoints">0</strong><small>捷運點</small></span>
+              <span><strong id="lotteryChance">5%</strong><small>抽獎權重</small></span>
+            </div>
+            <article class="player-card">
+              <div class="player-kicker"><span>今日幸運乘客的歌</span><span><i id="playDot"></i><b id="playState">同步播放</b></span></div>
+              <div class="song-row"><div><h2>稻香</h2><p>周杰倫 · 台北車站 · 板南線</p></div><button id="playButton" aria-label="暫停播放">Ⅱ</button></div>
+              <div class="waveform" id="waveform" aria-hidden="true"></div>
+              <blockquote>「每次搭車回家聽到這首歌，就想起小時候和家人一起吃晚餐的日子。」</blockquote>
+              <button class="checkin-button" id="checkinButton"><span><strong>我要點歌</strong><small>每日登記並累積捷運點</small></span><b id="rewardPoints">+7 點</b></button>
+            </article>
+            <button class="together-card" data-radio-action="together">
+              <span><strong>乘客交流</strong><small>需要協助，或和正在搭車的人交換一點心情。</small></span><b>開啟</b>
+              <em>共乘互助 · 同線即時　│　社群閒聊 · 跨線主題</em>
+            </button>
+            <article class="lucky-draw">
+              <div><span><strong>每日幸運抽選</strong><small id="drawHeadline">留下一首歌，取得今天的抽選券</small></span><b id="drawStatus">等待登記</b></div>
+              <div class="ticket-digits" id="ticketDigits"><span>–</span><span>–</span><span>–</span><span>–</span><span>–</span><span>–</span></div>
+              <button class="secondary-button" id="drawButton" disabled>完成點播後即可揭曉</button>
+            </article>
+          </div>
+        </section>
+
+        <section class="screen services-screen" id="screen-services" data-screen="services" aria-label="功能服務" hidden>
+          <header class="section-header"><div><span class="metro-mark dark">M</span><h1>功能服務</h1></div><small>依你的旅程快速找到需要的服務</small></header>
+          <label class="search-box"><span>⌕</span><input id="serviceSearch" type="search" placeholder="搜尋功能或服務" autocomplete="off" /></label>
+          <div class="service-list" id="serviceList"></div>
+        </section>
+
+        <section class="screen account-screen" id="screen-account" data-screen="account" aria-label="會員中心" hidden>
+          <div class="account-content">
+            <article class="profile-card">
+              <div class="avatar">林</div><div><small>早安，歡迎回來</small><h1 id="profileName">林怡君</h1><span>帳號 08•• ••42</span></div>
+              <button data-sheet="profile" aria-label="編輯個人資料">›</button>
+            </article>
+            <section class="benefit-card">
+              <div class="section-title"><span><small>本月常客優惠</small><h2>已搭乘 21 次</h2></span><strong>可回饋 NT$120</strong></div>
+              <div class="progress"><i style="width:75%"></i></div>
+              <div class="benefit-grid"><button data-sheet="points"><strong>1,280</strong><small>捷運點</small></button><button data-sheet="carbon"><strong>128.4 kg</strong><small>累積減碳</small></button><button data-sheet="rides"><strong>21</strong><small>本月搭乘</small></button></div>
+            </section>
+            <section class="analytics-card">
+              <div class="section-title"><span><small>通勤洞察</small><h2>九月搭乘趨勢</h2></span><button data-sheet="rides">全部紀錄 ›</button></div>
+              <div class="bar-chart" aria-label="九月三週搭乘次數"><i style="height:72%"></i><i style="height:86%"></i><i style="height:61%"></i><i class="forecast" style="height:48%"></i></div>
+              <div class="chart-labels"><span>第1週</span><span>第2週</span><span>第3週</span><span>本週</span></div>
+            </section>
+            <section class="settings-card">
+              <h2>通知設定</h2>
+              <label><span><strong>營運異常提醒</strong><small>路線異動與延誤通知</small></span><input type="checkbox" checked /></label>
+              <label><span><strong>個人化路線</strong><small>常用路線與到站提醒</small></span><input type="checkbox" checked /></label>
+              <label><span><strong>點數到期提醒</strong><small>捷運點與優惠券通知</small></span><input type="checkbox" checked /></label>
+            </section>
+            <button class="logout-button" id="logoutButton">登出會員帳戶</button>
+          </div>
+        </section>
+      </main>
+
+      <nav class="tabbar" aria-label="主要導覽">
+        <button class="is-active" data-tab="home"><span>⌂</span><small>首頁</small></button>
+        <button data-tab="map"><span>⌘</span><small>路線圖</small></button>
+        <button data-tab="radio"><span>〽</span><small>捷客電台</small></button>
+        <button data-tab="services"><span>▦</span><small>功能服務</small></button>
+        <button data-tab="account"><span>●</span><small>會員中心</small></button>
+      </nav>
+    </div>
+
+    <div class="modal-layer" id="onboarding" role="dialog" aria-modal="true" aria-label="新手教學">
+      <div class="onboarding-card">
+        <div class="onboarding-actions"><button id="skipOnboarding">跳過</button><button id="closeOnboarding" aria-label="關閉新手教學">×</button></div>
+        <div class="onboarding-demo" id="onboardingDemo"></div>
+        <h2 id="onboardingTitle"></h2>
+        <p id="onboardingDescription"></p>
+        <div class="page-dots" id="pageDots" aria-label="新手教學進度"></div>
+        <button class="primary-button" id="nextOnboarding">下一步 →</button>
+      </div>
+    </div>
+
+    <div class="sheet-backdrop" id="sheetBackdrop" hidden></div>
+    <section class="bottom-sheet" id="bottomSheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+      <div class="sheet-handle"></div>
+      <header><div><small id="sheetKicker"></small><h2 id="sheetTitle"></h2></div><button id="closeSheet" aria-label="關閉">×</button></header>
+      <div class="sheet-body" id="sheetBody"></div>
+    </section>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+    <script src="./app.js"></script>
+  </body>
+</html>

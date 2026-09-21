@@ -1,0 +1,10 @@
+{
+  "name": "Taipei Metro Go",
+  "short_name": "Metro Go",
+  "description": "智慧通勤與無障礙旅運概念原型",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f2f2f7",
+  "theme_color": "#f2f2f7",
+  "lang": "zh-Hant"
+}

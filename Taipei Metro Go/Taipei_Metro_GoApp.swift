@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct Taipei_Metro_GoApp: App {
+    @StateObject private var travelState = TravelState()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(travelState)
+                .onAppear { travelState.startLocationUpdates() }
+                .onDisappear { travelState.stopLocationUpdates() }
         }
     }
 }

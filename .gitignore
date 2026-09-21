@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# Xcode user-specific files
+xcuserdata/
+*.xcuserstate
+
+# Build products and archives
+DerivedData/
+build/
+*.xcarchive
+*.ipa
+*.dSYM
+
+# Local portfolio backup artifacts
+Portfolio Backups/
