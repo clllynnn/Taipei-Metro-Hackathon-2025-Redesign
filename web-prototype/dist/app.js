@@ -244,6 +244,7 @@ function openStationDetails(name) {
 
 function openSimpleSheet(type) {
   const sheets = {
+    award: ['得獎專題','2025 捷運盃黑客松・季軍', '<div class="award-sheet-hero"><span>★</span><div><small>季軍 · 獎金 NT$20,000</small><h3>要不要搭捷運</h3></div></div><div class="sheet-info-card"><h3>新聞稿摘要</h3><p>團隊以情緒設計為核心，結合 AI 動態推薦與桌面小工具，快速提供通勤資訊；並以 metroTogether 串起音樂、聊天室與情緒陪伴，打造溫馨的候車體驗。</p></div><div class="sheet-info-card"><h3>競賽重點</h3><p>本屆主題為「設計創新・AI 賦能」，鼓勵運用臺北捷運開放資料與 AI 技術，並重視內容創新、UI/UX、功能可行性與使用者體驗。共 104 組報名、10 組晉級決賽。</p></div><div class="sheet-info-card"><h3>作品亮點</h3><p>情緒設計、AI 動態推薦、桌面小工具，以及以音樂、聊天室和情緒陪伴組成的 metroTogether。</p></div><div class="award-sources"><a href="https://www.gov.taipei/News_Content.aspx?n=F0DDAF49B89E9413&s=C6122A8A549FD692" target="_blank" rel="noreferrer">↗ 臺北市政府：決賽結果新聞稿</a><a href="https://www.metro.taipei/News_Content.aspx?n=30CCEFD2A45592BF&sms=72544237BBE4C5F6&s=8094C28B588FCBC9" target="_blank" rel="noreferrer">↗ 臺北捷運：競賽主題說明</a></div>'],
     pass: ['票卡與乘車碼','旅遊票卡', '<div class="sheet-info-card"><h3>24 小時票</h3><p>啟用後 24 小時內不限次數搭乘台北捷運。</p></div><div class="sheet-info-card"><h3>QR 乘車碼</h3><p>目前有 2 張可用票券。這是概念原型，不會產生真實票證。</p></div>'],
     locker: ['台北車站 · 即時資訊','行李寄放', '<div class="sheet-info-card"><h3>M3 出口智慧置物櫃</h3><p>大型 4 格、中型 12 格可用。步行約 3 分鐘。</p></div><div class="sheet-info-card"><h3>站內服務中心</h3><p>可協助大型行李與無障礙旅客寄放需求。</p></div>'],
     airport: ['機場轉乘','前往桃園機場', '<div class="sheet-info-card"><h3>建議路線</h3><p>台北車站下車後，依「桃園機場捷運」指標前往 A1 台北車站；全程約 42 分鐘。</p></div>'],

@@ -3,6 +3,7 @@ import SwiftUI
 @MainActor
 struct ServiceMenuView: View {
     @StateObject private var viewModel = ServiceMenuViewModel()
+    @State private var showAwardNews = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -15,6 +16,14 @@ struct ServiceMenuView: View {
                 .padding(.horizontal, 18)
                 .padding(.top, 10)
                 .padding(.bottom, 4)
+
+            if viewModel.searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                AwardRecognitionCard {
+                    showAwardNews = true
+                }
+                .padding(.horizontal, 18)
+                .padding(.top, 8)
+            }
 
             List {
                 if viewModel.searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
@@ -42,6 +51,9 @@ struct ServiceMenuView: View {
         .background(Color.pageBackground.ignoresSafeArea())
         .preferredColorScheme(.light)
         .onAppear { viewModel.refreshDynamicShortcuts() }
+        .sheet(isPresented: $showAwardNews) {
+            AwardNewsView()
+        }
     }
 }
 
